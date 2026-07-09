@@ -631,7 +631,7 @@
   function showSlide(i){
     slides.forEach((s,idx)=> s.classList.toggle('active', idx===i));
     dots.forEach((d,idx)=> d.classList.toggle('active', idx===i));
-    credit.querySelector('.tip').textContent = 'Photo \u2014 ' + creditNames[i];
+    if (credit) credit.querySelector('.tip').textContent = 'Photo \u2014 ' + creditNames[i];
     current = i;
   }
   function nextSlide(){ showSlide((current+1) % slides.length); }
@@ -640,16 +640,22 @@
   startHero();
   const scroller = document.getElementById('t-scroll');
   const cardWidth = 444;
-  document.getElementById('t-next').addEventListener('click', () => scroller.scrollBy({ left: cardWidth, behavior: 'smooth' }));
-  document.getElementById('t-prev').addEventListener('click', () => scroller.scrollBy({ left: -cardWidth, behavior: 'smooth' }));
+  const tNext = document.getElementById('t-next');
+  const tPrev = document.getElementById('t-prev');
+  if (scroller && tNext && tPrev) {
+    tNext.addEventListener('click', () => scroller.scrollBy({ left: cardWidth, behavior: 'smooth' }));
+    tPrev.addEventListener('click', () => scroller.scrollBy({ left: -cardWidth, behavior: 'smooth' }));
+  }
   const collabMore = document.getElementById('collab-more');
-  collabMore.addEventListener('click', () => {
-    const hidden = document.querySelectorAll('#collab-grid .collab-hidden');
-    const isShown = collabMore.dataset.shown === '1';
-    hidden.forEach(el => el.style.display = isShown ? 'none' : 'flex');
-    collabMore.dataset.shown = isShown ? '0' : '1';
-    collabMore.childNodes[0].textContent = isShown ? 'See more ' : 'See less ';
-  });
+  if (collabMore) {
+    collabMore.addEventListener('click', () => {
+      const hidden = document.querySelectorAll('#collab-grid .collab-hidden');
+      const isShown = collabMore.dataset.shown === '1';
+      hidden.forEach(el => el.style.display = isShown ? 'none' : 'flex');
+      collabMore.dataset.shown = isShown ? '0' : '1';
+      collabMore.childNodes[0].textContent = isShown ? 'See more ' : 'See less ';
+    });
+  }
 
   // mobile menu toggle
   const navToggle = document.getElementById('nav-toggle');
