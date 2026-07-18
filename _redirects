@@ -1,0 +1,5 @@
+# Prevent the Netlify Functions source (and netlify/data/users.json, which
+# holds account password hashes) from being served as regular static files.
+# Function invocation itself goes through /.netlify/functions/* which is a
+# separate, reserved route and is not affected by this rule.
+/netlify/*  /404.html  404!
